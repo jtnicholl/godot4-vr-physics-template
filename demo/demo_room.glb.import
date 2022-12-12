@@ -1,0 +1,53 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://blpcyu7uayp36"
+path="res://.godot/imported/demo_room.glb-e6e8acd7448cbc524331d2cff86cf28e.scn"
+
+[deps]
+
+source_file="res://demo/demo_room.glb"
+dest_files=["res://.godot/imported/demo_room.glb-e6e8acd7448cbc524331d2cff86cf28e.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="DemoRoom"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=2
+meshes/lightmap_texel_size=0.1
+skins/use_named_skins=false
+animation/import=false
+animation/fps=30
+animation/trimming=false
+import_script/path=""
+_subresources={
+"materials": {
+"bricks": {
+"use_external/enabled": true,
+"use_external/path": "res://demo/materials/bricks.tres"
+},
+"wall": {
+"use_external/enabled": true,
+"use_external/path": "res://demo/materials/wall.tres"
+},
+"wood": {
+"use_external/enabled": true,
+"use_external/path": "res://demo/materials/wood.tres"
+}
+},
+"nodes": {
+"PATH:CourtyardWalls": {
+"generate/occluder": 1
+},
+"PATH:InteriorWalls": {
+"generate/occluder": 1
+}
+}
+}

@@ -1,0 +1,12 @@
+# Godot specific
+.import/
+import/
+.godot/
+godot/
+*.translation
+
+# OS specific
+.directory
+.DS_Store
+[Tt]humbs.db
+[Dd]esktop.ini

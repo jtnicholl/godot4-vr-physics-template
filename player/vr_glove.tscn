@@ -1,0 +1,36 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://player/vr_glove/vr_glove.glb" type="PackedScene" id=1]
+[ext_resource path="res://player/vr_glove.gd" type="Script" id=2]
+
+[sub_resource type="AnimationNodeBlend3" id=5]
+
+[sub_resource type="AnimationNodeAnimation" id=4]
+animation = "flat"
+
+[sub_resource type="AnimationNodeAnimation" id=3]
+animation = "grip"
+
+[sub_resource type="AnimationNodeAnimation" id=2]
+animation = "rest"
+
+[sub_resource type="AnimationNodeBlendTree" id=1]
+graph_offset = Vector2( -177.003, -23.5014 )
+nodes/blend/node = SubResource( 5 )
+nodes/blend/position = Vector2( 80, 100 )
+nodes/flat/node = SubResource( 4 )
+nodes/flat/position = Vector2( -160, 10 )
+nodes/grip/node = SubResource( 3 )
+nodes/grip/position = Vector2( -170, 240 )
+nodes/rest/node = SubResource( 2 )
+nodes/rest/position = Vector2( -170, 130 )
+node_connections = [ "blend", 0, "flat", "blend", 1, "rest", "blend", 2, "grip", "output", 0, "blend" ]
+
+[node name="VRGlove" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+tree_root = SubResource( 1 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/blend/blend_amount = 0

@@ -1,0 +1,5 @@
+[gd_scene format=2]
+
+[node name="VRHandJoint" type="PinJoint3D"]
+process_priority = -1
+params/impulse_clamp = 1.0

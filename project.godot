@@ -1,0 +1,138 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+_global_script_classes=[{
+"base": "RefCounted",
+"class": &"GrabResult",
+"language": &"GDScript",
+"path": "res://player/grab_result.gd"
+}, {
+"base": "RigidBody3D",
+"class": &"Grabbable",
+"language": &"GDScript",
+"path": "res://grabbables/grabbable.gd"
+}, {
+"base": "CharacterBody3D",
+"class": &"HandAnchor",
+"language": &"GDScript",
+"path": "res://player/hand_anchor.gd"
+}, {
+"base": "Grabbable",
+"class": &"Moveable",
+"language": &"GDScript",
+"path": "res://grabbables/moveable.gd"
+}, {
+"base": "Grabbable",
+"class": &"Pickup",
+"language": &"GDScript",
+"path": "res://grabbables/pickup.gd"
+}, {
+"base": "RayCast3D",
+"class": &"Teleporter",
+"language": &"GDScript",
+"path": "res://player/teleporter.gd"
+}, {
+"base": "RefCounted",
+"class": &"Utility",
+"language": &"GDScript",
+"path": "res://utility.gd"
+}, {
+"base": "XRController3D",
+"class": &"VRController",
+"language": &"GDScript",
+"path": "res://player/vr_controller.gd"
+}, {
+"base": "Node3D",
+"class": &"VRGlove",
+"language": &"GDScript",
+"path": "res://player/vr_glove.gd"
+}, {
+"base": "RigidBody3D",
+"class": &"VRHand",
+"language": &"GDScript",
+"path": "res://player/vr_hand.gd"
+}, {
+"base": "Node3D",
+"class": &"VRPlayer",
+"language": &"GDScript",
+"path": "res://player/vr_player.gd"
+}]
+_global_script_class_icons={
+"GrabResult": "",
+"Grabbable": "",
+"HandAnchor": "",
+"Moveable": "",
+"Pickup": "",
+"Teleporter": "",
+"Utility": "",
+"VRController": "",
+"VRGlove": "",
+"VRHand": "",
+"VRPlayer": ""
+}
+
+[application]
+
+config/name="VR Template"
+run/main_scene="res://demo/demo_room.tscn"
+config/features=PackedStringArray("4.0")
+config/icon="res://icon.svg"
+
+[autoload]
+
+Settings="*res://settings.gd"
+
+[debug]
+
+gdscript/warnings/shadowed_variable=false
+gdscript/warnings/shadowed_variable_base_class=0
+gdscript/warnings/standalone_expression=2
+gdscript/warnings/void_assignment=2
+gdscript/warnings/property_used_as_function=2
+gdscript/warnings/constant_used_as_function=2
+gdscript/warnings/standalone_ternary=2
+
+[editor_plugins]
+
+enabled=PackedStringArray()
+
+[filesystem]
+
+import/blender/enabled=false
+import/fbx/enabled=false
+
+[layer_names]
+
+3d_render/layer_1="Environment"
+3d_render/layer_2="Props"
+3d_render/layer_3="Player"
+3d_render/layer_9="First Person Only"
+3d_render/layer_10="Third Person Only"
+3d_physics/layer_1="Environment"
+3d_physics/layer_2="Props"
+3d_physics/layer_3="Player"
+
+[physics]
+
+3d/run_on_separate_thread=true
+
+[rendering]
+
+driver/threads/thread_model=2
+environment/ssao/quality=1
+environment/ssil/quality=1
+anti_aliasing/quality/screen_space_aa=1
+anti_aliasing/quality/use_debanding=true
+
+[xr]
+
+openxr/enabled=true
+openxr/default_action_map="res://action_map.tres"
+shaders/enabled=true

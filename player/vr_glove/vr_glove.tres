@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cocxsqdlj0q7j"]
+
+[ext_resource type="Texture2D" uid="uid://b12bc7d4fnaub" path="res://player/vr_glove/hands_albedo.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://bj3a0cjclmj6w" path="res://player/vr_glove/hands_normal.png" id="2"]
+
+[resource]
+resource_name = "vr_glove"
+albedo_texture = ExtResource("1")
+roughness = 0.6
+normal_enabled = true
+normal_texture = ExtResource("2")

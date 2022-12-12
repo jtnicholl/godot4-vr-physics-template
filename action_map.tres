@@ -1,0 +1,50 @@
+[gd_resource type="OpenXRActionMap" load_steps=11 format=3 uid="uid://ks31262wwea0"]
+
+[sub_resource type="OpenXRAction" id="OpenXRAction_46flb"]
+resource_name = "walk"
+localized_name = "Walk"
+action_type = 2
+
+[sub_resource type="OpenXRAction" id="OpenXRAction_pr1aj"]
+resource_name = "teleport"
+localized_name = "Teleport"
+action_type = 0
+
+[sub_resource type="OpenXRAction" id="OpenXRAction_wdh8b"]
+resource_name = "grab"
+localized_name = "Grab"
+action_type = 0
+
+[sub_resource type="OpenXRAction" id="OpenXRAction_a81ea"]
+resource_name = "turn"
+localized_name = "Turn"
+action_type = 2
+
+[sub_resource type="OpenXRActionSet" id="OpenXRActionSet_a5rpj"]
+resource_name = "vrtemplate"
+localized_name = "VR Template"
+actions = [SubResource("OpenXRAction_46flb"), SubResource("OpenXRAction_pr1aj"), SubResource("OpenXRAction_wdh8b"), SubResource("OpenXRAction_a81ea")]
+
+[sub_resource type="OpenXRIPBinding" id="OpenXRIPBinding_miomp"]
+action = SubResource("OpenXRAction_wdh8b")
+paths = PackedStringArray("/user/hand/left/input/trigger/click", "/user/hand/right/input/trigger/click")
+
+[sub_resource type="OpenXRIPBinding" id="OpenXRIPBinding_iq2ik"]
+action = SubResource("OpenXRAction_pr1aj")
+paths = PackedStringArray("/user/hand/left/input/trackpad/click")
+
+[sub_resource type="OpenXRIPBinding" id="OpenXRIPBinding_3gt1j"]
+action = SubResource("OpenXRAction_46flb")
+paths = PackedStringArray("/user/hand/left/input/trackpad")
+
+[sub_resource type="OpenXRIPBinding" id="OpenXRIPBinding_sk44r"]
+action = SubResource("OpenXRAction_a81ea")
+paths = PackedStringArray("/user/hand/right/input/trackpad")
+
+[sub_resource type="OpenXRInteractionProfile" id="OpenXRInteractionProfile_lfnv6"]
+interaction_profile_path = "/interaction_profiles/htc/vive_controller"
+bindings = [SubResource("OpenXRIPBinding_miomp"), SubResource("OpenXRIPBinding_iq2ik"), SubResource("OpenXRIPBinding_3gt1j"), SubResource("OpenXRIPBinding_sk44r")]
+
+[resource]
+action_sets = [SubResource("OpenXRActionSet_a5rpj")]
+interaction_profiles = [SubResource("OpenXRInteractionProfile_lfnv6")]

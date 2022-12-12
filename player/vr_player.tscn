@@ -1,0 +1,145 @@
+[gd_scene load_steps=13 format=3 uid="uid://x0jg0canycs5"]
+
+[ext_resource type="PackedScene" uid="uid://gspcqeq024tv" path="res://player/vr_controller.tscn" id="1"]
+[ext_resource type="Script" path="res://player/vr_player.gd" id="2"]
+[ext_resource type="PackedScene" path="res://player/vr_hand.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://player/hand_anchor.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://player/vr_hand_joint.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://player/vr_glove.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://br0gkpoe41arf" path="res://player/teleporter.tscn" id="7"]
+
+[sub_resource type="CapsuleShape3D" id="1"]
+resource_local_to_scene = true
+radius = 0.2
+height = 1.8
+
+[sub_resource type="SphereShape3D" id="2"]
+radius = 0.1
+
+[sub_resource type="Animation" id="3"]
+resource_name = "RESET"
+length = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OutOfBoundsPlayer/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.101961, 0.101961, 0.101961, 0)]
+}
+
+[sub_resource type="Animation" id="4"]
+resource_name = "out_of_bounds"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OutOfBoundsPlayer/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.101961, 0.101961, 0.101961, 0), Color(0.101961, 0.101961, 0.101961, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3rcp8"]
+_data = {
+"RESET": SubResource("3"),
+"out_of_bounds": SubResource("4")
+}
+
+[node name="VRPlayer" type="Node3D"]
+script = ExtResource("2")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("1")
+
+[node name="Origin" type="XROrigin3D" parent="CharacterBody3D"]
+
+[node name="Camera" type="XRCamera3D" parent="CharacterBody3D/Origin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+cull_mask = 1048063
+
+[node name="BoundsCheck" type="Area3D" parent="CharacterBody3D/Origin/Camera"]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Origin/Camera/BoundsCheck"]
+shape = SubResource("2")
+
+[node name="LeftController" parent="CharacterBody3D/Origin" instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 1, 0)
+tracker = &"left_hand"
+
+[node name="Teleporter" parent="CharacterBody3D/Origin/LeftController" instance=ExtResource("7")]
+
+[node name="RightController" parent="CharacterBody3D/Origin" instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 1, 0)
+tracker = &"right_hand"
+
+[node name="Teleporter" parent="CharacterBody3D/Origin/RightController" instance=ExtResource("7")]
+
+[node name="LeftHandAnchor" parent="." instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 1, 0)
+controller = NodePath("../CharacterBody3D/Origin/LeftController")
+
+[node name="LeftHandJoint" parent="." instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 1, 0)
+node_a = NodePath("../LeftHandAnchor")
+node_b = NodePath("../LeftHand")
+
+[node name="LeftHand" parent="." instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 1, 0)
+controller = NodePath("../CharacterBody3D/Origin/LeftController")
+
+[node name="VRGlove" parent="LeftHand" instance=ExtResource("6")]
+
+[node name="RightHandAnchor" parent="." instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 1, 0)
+controller = NodePath("../CharacterBody3D/Origin/RightController")
+
+[node name="RightHandJoint" parent="." instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 1, 0)
+node_a = NodePath("../RightHandAnchor")
+node_b = NodePath("../RightHand")
+
+[node name="RightHand" parent="." instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 1, 0)
+controller = NodePath("../CharacterBody3D/Origin/RightController")
+
+[node name="VRGlove" parent="RightHand" instance=ExtResource("6")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="OutOfBoundsPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_3rcp8")
+}
+
+[node name="ColorRect" type="ColorRect" parent="OutOfBoundsPlayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101961, 0.101961, 0.101961, 0)
+
+[connection signal="body_entered" from="CharacterBody3D/Origin/Camera/BoundsCheck" to="." method="_on_bounds_check_body_entered"]
+[connection signal="body_exited" from="CharacterBody3D/Origin/Camera/BoundsCheck" to="." method="_on_bounds_check_body_exited"]
+[connection signal="button_pressed" from="CharacterBody3D/Origin/LeftController" to="." method="_on_left_controller_button_pressed"]
+[connection signal="button_released" from="CharacterBody3D/Origin/LeftController" to="." method="_on_left_controller_button_released"]
+[connection signal="input_axis_changed" from="CharacterBody3D/Origin/LeftController" to="." method="_on_controller_input_axis_changed"]
+[connection signal="teleported" from="CharacterBody3D/Origin/LeftController/Teleporter" to="." method="_on_teleporter_teleported"]
+[connection signal="button_pressed" from="CharacterBody3D/Origin/RightController" to="." method="_on_right_controller_button_pressed"]
+[connection signal="button_released" from="CharacterBody3D/Origin/RightController" to="." method="_on_right_controller_button_released"]
+[connection signal="input_axis_changed" from="CharacterBody3D/Origin/RightController" to="." method="_on_controller_input_axis_changed"]
+[connection signal="teleported" from="CharacterBody3D/Origin/RightController/Teleporter" to="." method="_on_teleporter_teleported"]
+[connection signal="animation_finished" from="OutOfBoundsPlayer" to="." method="_on_out_of_bounds_player_animation_finished"]

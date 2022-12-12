@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://d0mogcieiv35y"]
+
+[ext_resource type="PackedScene" uid="uid://djihtemhsqmbu" path="res://demo/wall_lamp.glb" id="1_pbcyl"]
+[ext_resource type="PackedScene" uid="uid://bx02wsyp8fuce" path="res://demo/lamp_shade.glb" id="2_mhbwj"]
+
+[sub_resource type="BoxShape3D" id="1"]
+size = Vector3(0.1, 0.2, 0.02)
+
+[sub_resource type="BoxShape3D" id="2"]
+size = Vector3(0.02, 0.03, 0.1)
+
+[sub_resource type="BoxShape3D" id="3"]
+size = Vector3(0.016, 0.1, 0.022)
+
+[sub_resource type="CylinderShape3D" id="4"]
+height = 0.11
+radius = 0.06
+
+[node name="WallLamp" type="Node3D"]
+
+[node name="WallLamp" parent="." instance=ExtResource("1_pbcyl")]
+cast_shadow = 0
+
+[node name="LampShade" parent="." instance=ExtResource("2_mhbwj")]
+cast_shadow = 0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0.095)
+shadow_enabled = true
+shadow_bias = 0.08
+distance_fade_enabled = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape1" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.01)
+shape = SubResource("1")
+
+[node name="CollisionShape2" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0599337)
+shape = SubResource("2")
+
+[node name="CollisionShape3" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0149906, 0.0952381)
+shape = SubResource("3")
+
+[node name="CollisionShape4" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.105, 0.095)
+shape = SubResource("4")

@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://d3w5xsieb2u6i"]
+
+[ext_resource type="PackedScene" path="res://grabbables/moveable.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://balutxode2qd2" path="res://demo/drawer.glb" id="2_tu3gs"]
+
+[sub_resource type="BoxShape3D" id="1"]
+margin = 0.001
+size = Vector3(0.3, 0.02, 0.54)
+
+[sub_resource type="BoxShape3D" id="2"]
+margin = 0.001
+size = Vector3(0.3, 0.1, 0.02)
+
+[sub_resource type="BoxShape3D" id="3"]
+margin = 0.001
+size = Vector3(0.02, 0.1, 0.54)
+
+[node name="Drawer" instance=ExtResource("1")]
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+custom_integrator = true
+
+[node name="Handle" type="Marker3D" parent="GrabPoints" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0.29)
+
+[node name="Drawer" parent="." index="2" instance=ExtResource("2_tu3gs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03, -0.27)
+
+[node name="Bottom" type="CollisionShape3D" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 2.98023e-08)
+shape = SubResource("1")
+
+[node name="Back" type="CollisionShape3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.26)
+shape = SubResource("2")
+
+[node name="Front" type="CollisionShape3D" parent="." index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.26)
+shape = SubResource("2")
+
+[node name="Left" type="CollisionShape3D" parent="." index="6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, 0.02, 2.98023e-08)
+shape = SubResource("3")
+
+[node name="Right" type="CollisionShape3D" parent="." index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, 0.02, 2.98023e-08)
+shape = SubResource("3")

@@ -1,0 +1,83 @@
+[gd_scene load_steps=10 format=3 uid="uid://br0gkpoe41arf"]
+
+[ext_resource type="Script" path="res://player/teleporter.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bvv6c1wdsegsp" path="res://player/textures/teleport_target.png" id="2"]
+[ext_resource type="Shader" path="res://player/teleporter_target.gdshader" id="2_4kti1"]
+
+[sub_resource type="CapsuleShape3D" id="1"]
+radius = 0.3
+height = 1.9
+
+[sub_resource type="PlaneMesh" id="2"]
+size = Vector2(0.8, 0.8)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0jfjg"]
+render_priority = 0
+shader = ExtResource("2_4kti1")
+shader_parameter/albedo_texture = ExtResource("2")
+
+[sub_resource type="Animation" id="4"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Target")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array()
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="5"]
+resource_name = "spin"
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Target")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 1, 1, 0, 0.707107, 0, 0.707107)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rkoy2"]
+_data = {
+"RESET": SubResource("4"),
+"spin": SubResource("5")
+}
+
+[node name="Teleporter" type="RayCast3D"]
+target_position = Vector3(0, 0, -10)
+script = ExtResource("1")
+
+[node name="CollisionCheck" type="Area3D" parent="."]
+visible = false
+collision_layer = 4
+input_ray_pickable = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionCheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("1")
+
+[node name="Target" type="MeshInstance3D" parent="CollisionCheck"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+layers = 4
+instance_shader_parameters/current_color = Color(1, 1, 1, 1)
+mesh = SubResource("2")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_0jfjg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CollisionCheck"]
+autoplay = "spin"
+libraries = {
+"": SubResource("AnimationLibrary_rkoy2")
+}
