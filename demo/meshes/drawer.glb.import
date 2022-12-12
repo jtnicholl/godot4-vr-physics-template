@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://balutxode2qd2"
-path="res://.godot/imported/drawer.glb-4574996094b0abeb6b322235ad1ba524.scn"
+uid="uid://cywwnodor4e88"
+path="res://.godot/imported/drawer.glb-96d3c6fff371671231629c98daedf2ad.scn"
 
 [deps]
 
-source_file="res://demo/drawer.glb"
-dest_files=["res://.godot/imported/drawer.glb-4574996094b0abeb6b322235ad1ba524.scn"]
+source_file="res://demo/meshes/drawer.glb"
+dest_files=["res://.godot/imported/drawer.glb-96d3c6fff371671231629c98daedf2ad.scn"]
 
 [params]
 
@@ -26,7 +26,7 @@ skins/use_named_skins=false
 animation/import=false
 animation/fps=30
 animation/trimming=false
-import_script/path="res://demo/import_single_mesh.gd"
+import_script/path="res://demo/meshes/import_single_mesh.gd"
 _subresources={
 "materials": {
 "knob": {

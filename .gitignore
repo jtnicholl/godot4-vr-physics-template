@@ -4,6 +4,7 @@ import/
 .godot/
 godot/
 *.translation
+*.unwrap_cache
 
 # OS specific
 .directory

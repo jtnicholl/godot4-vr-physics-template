@@ -13,11 +13,12 @@ var _previous_position := Vector3.ZERO
 
 @onready var _controller := get_node(controller) as VRController
 @onready var _glove := $VRGlove as VRGlove
-@onready var _positive_corner: Vector3 = $Palm.shape.extents * Vector3(1, -1, 1)
+@onready var _positive_corner := (($Palm as CollisionShape3D).shape as BoxShape3D).size \
+		* Vector3(1, -1, 1)
 
 
 func _ready():
-	assert(is_instance_valid(_controller)) #,"Controller path was not set correctly for " + name)
+	assert(is_instance_valid(_controller), "Controller path was not set correctly for " + name)
 
 
 func _physics_process(delta: float):
@@ -30,10 +31,10 @@ func _integrate_forces(state: PhysicsDirectBodyState3D):
 		_copy_rotation(state, _time_since_contact) # TODO this does not take delta into account correctly
 		_time_since_contact += state.step
 		if _time_since_contact >= 0.1:
-			_glove.call_deferred("rest")
+			_glove.rest.call_deferred()
 	else:
 		if _contact_is_on_lower_corner(to_local(state.get_contact_collider_position(0))):
-			_glove.call_deferred("flatten")
+			_glove.flatten.call_deferred()
 		_time_since_contact = 0.0
 
 

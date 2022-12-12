@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ctsca6oj5gie"
-path="res://.godot/imported/desk.glb-eb1b756d0428a4680c03b1868d1e7677.scn"
+uid="uid://cjxl68pyl4qvx"
+path="res://.godot/imported/lamp_shade.glb-e109c4f31d56a7c97da4524259952d42.scn"
 
 [deps]
 
-source_file="res://demo/desk.glb"
-dest_files=["res://.godot/imported/desk.glb-eb1b756d0428a4680c03b1868d1e7677.scn"]
+source_file="res://demo/meshes/lamp_shade.glb"
+dest_files=["res://.godot/imported/lamp_shade.glb-e109c4f31d56a7c97da4524259952d42.scn"]
 
 [params]
 
@@ -26,12 +26,12 @@ skins/use_named_skins=false
 animation/import=false
 animation/fps=30
 animation/trimming=false
-import_script/path="res://demo/import_single_mesh.gd"
+import_script/path="res://demo/meshes/import_single_mesh.gd"
 _subresources={
 "materials": {
-"wood": {
+"lamp_shade": {
 "use_external/enabled": true,
-"use_external/path": "res://demo/materials/wood.tres"
+"use_external/path": "res://demo/materials/lamp_shade.tres"
 }
 }
 }

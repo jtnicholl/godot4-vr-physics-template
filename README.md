@@ -1,3 +1,5 @@
+Porting this project to Godot 4.0 is still a work in progress. This is not intended for use yet.
+
 # Godot VR Physics Template
 This is a basic template for a VR application in Godot with physical hands that interact with the environment, and cannot go through walls or other solid objects. The player can pick up items, and those too cannot be pushed through walls. It also provides other expected VR functionality such as turning and teleporting, as well as some other basic features for any application including loading settings at runtime from a config file.
 

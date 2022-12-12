@@ -1,10 +1,13 @@
 class_name Grabbable extends RigidBody3D
 
 
-@onready var grab_points := $GrabPoints.get_children()
+var grab_points: Array[Node3D] = []
 
 
 func _ready():
+	for current_child in $GrabPoints.get_children():
+		assert(current_child is Node3D, "Grab points must extend Node3D")
+		grab_points.append(current_child)
 	assert(not grab_points.is_empty(), name + " has no valid grab points")
 
 

@@ -45,7 +45,7 @@ func _physics_process(_delta: float):
 
 
 func position_feet(global_position: Vector3) -> void:
-	var camera_offset := _camera.global_transform.origin - global_transform.origin
+	var camera_offset := _camera.global_position - self.global_position
 	_body.position.y = 0.0
 	camera_offset.y = 0.0
 	global_transform.origin = global_position - camera_offset

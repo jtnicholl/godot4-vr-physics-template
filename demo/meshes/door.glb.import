@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://opvotm3uly38"
-path="res://.godot/imported/door.glb-ed805cdd2f59f6fb39ed39b1a5f0e13d.scn"
+uid="uid://dk5ojuplnyhih"
+path="res://.godot/imported/door.glb-dc56abe1b14f6483192c48d4ffd7f951.scn"
 
 [deps]
 
-source_file="res://demo/door.glb"
-dest_files=["res://.godot/imported/door.glb-ed805cdd2f59f6fb39ed39b1a5f0e13d.scn"]
+source_file="res://demo/meshes/door.glb"
+dest_files=["res://.godot/imported/door.glb-dc56abe1b14f6483192c48d4ffd7f951.scn"]
 
 [params]
 
@@ -26,7 +26,7 @@ skins/use_named_skins=false
 animation/import=false
 animation/fps=30
 animation/trimming=false
-import_script/path="res://demo/import_single_mesh.gd"
+import_script/path="res://demo/meshes/import_single_mesh.gd"
 _subresources={
 "materials": {
 "brass": {

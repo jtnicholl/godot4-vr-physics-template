@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bx02wsyp8fuce"
-path="res://.godot/imported/lamp_shade.glb-3db95fb095a6256da8d66c9f601699a8.scn"
+uid="uid://cxbxru20qn22u"
+path="res://.godot/imported/wall_lamp.glb-80d0d2ec9db22f160fbee67e3c81a0a5.scn"
 
 [deps]
 
-source_file="res://demo/lamp_shade.glb"
-dest_files=["res://.godot/imported/lamp_shade.glb-3db95fb095a6256da8d66c9f601699a8.scn"]
+source_file="res://demo/meshes/wall_lamp.glb"
+dest_files=["res://.godot/imported/wall_lamp.glb-80d0d2ec9db22f160fbee67e3c81a0a5.scn"]
 
 [params]
 
@@ -21,17 +21,17 @@ meshes/ensure_tangents=true
 meshes/generate_lods=true
 meshes/create_shadow_meshes=true
 meshes/light_baking=2
-meshes/lightmap_texel_size=0.2
+meshes/lightmap_texel_size=0.1
 skins/use_named_skins=false
 animation/import=false
 animation/fps=30
 animation/trimming=false
-import_script/path="res://demo/import_single_mesh.gd"
+import_script/path="res://demo/meshes/import_single_mesh.gd"
 _subresources={
 "materials": {
-"lamp_shade": {
+"chrome": {
 "use_external/enabled": true,
-"use_external/path": "res://demo/materials/lamp_shade.tres"
+"use_external/path": "res://demo/materials/chrome.tres"
 }
 }
 }

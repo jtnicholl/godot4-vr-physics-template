@@ -13,7 +13,7 @@ func _ready():
 
 
 func _physics_process(delta: float):
-	var distance := _controller.to_global(offset_position) - self.global_transform.origin
+	var distance := _controller.to_global(offset_position) - self.global_position
 	if distance.length_squared() < 1.0:
 		velocity = distance / delta
 		move_and_slide()
@@ -22,4 +22,4 @@ func _physics_process(delta: float):
 
 
 func _copy_position() -> void:
-	self.global_transform.origin = _controller.global_transform.origin
+	self.global_position = _controller.global_position

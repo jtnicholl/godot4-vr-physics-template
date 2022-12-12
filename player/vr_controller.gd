@@ -1,7 +1,7 @@
 class_name VRController extends XRController3D
 
 
-@onready var grab_offset: Vector3 = -($GrabRange as Area3D).transform.origin
+@onready var grab_offset: Vector3 = -($GrabRange as Area3D).position
 
 @onready var _mesh := $Mesh as MeshInstance3D
 @onready var _grab_range := $GrabRange as Area3D
@@ -28,8 +28,8 @@ func try_grab(max_distance := INF) -> GrabResult:
 			continue
 		for current_point in current_body.grab_points:
 			var current_distance := \
-					(current_point as Node3D).global_transform.origin \
-					.distance_squared_to(self.global_transform.origin)
+					(current_point as Node3D).global_position \
+					.distance_squared_to(self.global_position)
 			if _compare(current_point, current_distance, closest_point, closest_distance):
 				closest_grabbable = current_body
 				closest_point = current_point
@@ -50,6 +50,6 @@ func _compare(point_a: Node3D, distance_a: float, point_b: Node3D, distance_b: f
 
 
 func _on_mesh_update_timer_timeout() -> void:
-	update_mesh()
-	if is_instance_valid(_mesh.mesh):
+#	update_mesh()
+#	if is_instance_valid(_mesh.mesh):
 		$MeshUpdateTimer.queue_free()

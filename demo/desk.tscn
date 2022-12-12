@@ -1,6 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://bay5l57xtgu44"]
+[gd_scene load_steps=9 format=3]
 
-[ext_resource type="PackedScene" uid="uid://ctsca6oj5gie" path="res://demo/desk.glb" id="1_qh6rr"]
+[ext_resource type="PackedScene" uid="uid://ctsca6oj5gie" path="res://demo/meshes/desk.glb" id="1_qh6rr"]
 [ext_resource type="PackedScene" uid="uid://d3w5xsieb2u6i" path="res://demo/drawer.tscn" id="2"]
 
 [sub_resource type="BoxShape3D" id="1"]

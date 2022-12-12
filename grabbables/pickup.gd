@@ -4,7 +4,7 @@ class_name Pickup extends Grabbable
 @export var throwable := true
 
 var _holder: Node3D = null
-var _collision_shapes := []
+var _collision_shapes: Array[CollisionShape3D] = []
 @onready var _original_parent := get_parent()
 
 
@@ -45,7 +45,7 @@ func _reparent_self(to: Node3D) -> void:
 
 func _reparent_shapes(to: Node3D) -> void:
 	for current_shape in _collision_shapes:
-		var original_transform := (current_shape as CollisionShape3D).global_transform
+		var original_transform := current_shape.global_transform
 		current_shape.get_parent().remove_child(current_shape)
 		to.add_child(current_shape)
 		current_shape.global_transform = original_transform

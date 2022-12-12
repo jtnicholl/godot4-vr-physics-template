@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bygyfvetpkdn8"]
+[gd_scene load_steps=7 format=3 uid="uid://63ck07v6nfv0"]
 
 [ext_resource type="PackedScene" path="res://grabbables/moveable.tscn" id="1"]
-[ext_resource type="PackedScene" uid="uid://opvotm3uly38" path="res://demo/door.glb" id="2_udbyf"]
+[ext_resource type="PackedScene" uid="uid://dk5ojuplnyhih" path="res://demo/meshes/door.glb" id="2_udbyf"]
 
 [sub_resource type="BoxShape3D" id="1"]
 size = Vector3(0.88, 2.18, 0.06)

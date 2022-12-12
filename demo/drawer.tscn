@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://d3w5xsieb2u6i"]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="PackedScene" path="res://grabbables/moveable.tscn" id="1"]
-[ext_resource type="PackedScene" uid="uid://balutxode2qd2" path="res://demo/drawer.glb" id="2_tu3gs"]
+[ext_resource type="PackedScene" uid="uid://balutxode2qd2" path="res://demo/meshes/drawer.glb" id="2_tu3gs"]
 
 [sub_resource type="BoxShape3D" id="1"]
 margin = 0.001

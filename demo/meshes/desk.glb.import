@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://djihtemhsqmbu"
-path="res://.godot/imported/wall_lamp.glb-5efb4c0af443a5448fc182198eb6d8bc.scn"
+uid="uid://dk2lsxeqthke"
+path="res://.godot/imported/desk.glb-e22d0e4d812d217e32562060cf45ced5.scn"
 
 [deps]
 
-source_file="res://demo/wall_lamp.glb"
-dest_files=["res://.godot/imported/wall_lamp.glb-5efb4c0af443a5448fc182198eb6d8bc.scn"]
+source_file="res://demo/meshes/desk.glb"
+dest_files=["res://.godot/imported/desk.glb-e22d0e4d812d217e32562060cf45ced5.scn"]
 
 [params]
 
@@ -21,17 +21,17 @@ meshes/ensure_tangents=true
 meshes/generate_lods=true
 meshes/create_shadow_meshes=true
 meshes/light_baking=2
-meshes/lightmap_texel_size=0.2
+meshes/lightmap_texel_size=0.1
 skins/use_named_skins=false
 animation/import=false
 animation/fps=30
 animation/trimming=false
-import_script/path="res://demo/import_single_mesh.gd"
+import_script/path="res://demo/meshes/import_single_mesh.gd"
 _subresources={
 "materials": {
-"chrome": {
+"wood": {
 "use_external/enabled": true,
-"use_external/path": "res://demo/materials/chrome.tres"
+"use_external/path": "res://demo/materials/wood.tres"
 }
 }
 }
