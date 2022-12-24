@@ -1,7 +1,7 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://dphdfdoqdc85m"]
 
-[ext_resource type="PackedScene" uid="uid://ctsca6oj5gie" path="res://demo/meshes/desk.glb" id="1_qh6rr"]
-[ext_resource type="PackedScene" uid="uid://d3w5xsieb2u6i" path="res://demo/drawer.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://dk2lsxeqthke" path="res://demo/meshes/desk.glb" id="1_qh6rr"]
+[ext_resource type="PackedScene" uid="uid://kx17b6c7h5hn" path="res://demo/drawer.tscn" id="2"]
 
 [sub_resource type="BoxShape3D" id="1"]
 margin = 0.005

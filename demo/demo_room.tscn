@@ -4,10 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://x0jg0canycs5" path="res://player/vr_player.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://demo/block.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://p3fsyd0fgb11" path="res://demo/pinwheel.tscn" id="4"]
-[ext_resource type="PackedScene" path="res://demo/rotating_door.tscn" id="5"]
-[ext_resource type="PackedScene" path="res://demo/desk.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://63ck07v6nfv0" path="res://demo/rotating_door.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://dphdfdoqdc85m" path="res://demo/desk.tscn" id="6"]
 [ext_resource type="PackedScene" uid="uid://blpcyu7uayp36" path="res://demo/meshes/demo_room.glb" id="11_5e07b"]
-[ext_resource type="PackedScene" path="res://demo/wall_lamp.tscn" id="12"]
+[ext_resource type="PackedScene" uid="uid://dovh5hp82rkfe" path="res://demo/wall_lamp.tscn" id="12"]
 [ext_resource type="Material" uid="uid://cu4i7lu6ejebq" path="res://demo/materials/floor.tres" id="14"]
 [ext_resource type="Material" uid="uid://bywy6hhovecrt" path="res://demo/materials/grass.tres" id="15"]
 [ext_resource type="Environment" uid="uid://g30148wxhkay" path="res://demo/environment.tres" id="16"]
@@ -127,11 +127,12 @@ shape = SubResource("4")
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="Interior"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-max_distance = 4.0
+max_distance = 8.0
 extents = Vector3(2.1, 1.6, 2.07)
 box_projection = true
+interior = true
 enable_shadows = true
-cull_mask = 3
+ambient_mode = 0
 
 [node name="Courtyard" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
@@ -158,11 +159,10 @@ surface_material_override/0 = ExtResource("15")
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="Courtyard"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-max_distance = 7.0
+max_distance = 12.0
 extents = Vector3(5.1, 2.1, 5.09)
 box_projection = true
 enable_shadows = true
-cull_mask = 3
 
 [node name="FrontWall" type="CollisionShape3D" parent="Courtyard"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5.1)
@@ -202,13 +202,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.9, -4.1)
 [node name="WallLamp2" parent="." instance=ExtResource("12")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.9, -4.1)
 
-[node name="VoxelGI" type="VoxelGI" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3)
-extents = Vector3(5.1, 2.1, 7.2)
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("16")
 
 [node name="DemoRoom" parent="." instance=ExtResource("11_5e07b")]
+
+[node name="HingeJoint3D" type="HingeJoint3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, 0.05, 1.1, -0.05)
+node_a = NodePath("../Doorframe")
+node_b = NodePath("../RotatingDoor")
+angular_limit/enable = true
+angular_limit/upper = 2.0944
+angular_limit/lower = -2.0944
 
 [connection signal="bounds_escaped" from="VRPlayer" to="." method="_on_vr_player_bounds_escaped"]

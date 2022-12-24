@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://gspcqeq024tv" path="res://player/vr_controller.tscn" id="1"]
 [ext_resource type="Script" path="res://player/vr_player.gd" id="2"]
-[ext_resource type="PackedScene" path="res://player/vr_hand.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://c1tn0kuu0bhs8" path="res://player/vr_hand.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://player/hand_anchor.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://player/vr_hand_joint.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://player/vr_glove.tscn" id="6"]
@@ -79,12 +79,14 @@ shape = SubResource("2")
 [node name="LeftController" parent="CharacterBody3D/Origin" instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 1, 0)
 tracker = &"left_hand"
+pose = &"aim"
 
 [node name="Teleporter" parent="CharacterBody3D/Origin/LeftController" instance=ExtResource("7")]
 
 [node name="RightController" parent="CharacterBody3D/Origin" instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 1, 0)
 tracker = &"right_hand"
+pose = &"aim"
 
 [node name="Teleporter" parent="CharacterBody3D/Origin/RightController" instance=ExtResource("7")]
 
@@ -134,12 +136,14 @@ color = Color(0.101961, 0.101961, 0.101961, 0)
 
 [connection signal="body_entered" from="CharacterBody3D/Origin/Camera/BoundsCheck" to="." method="_on_bounds_check_body_entered"]
 [connection signal="body_exited" from="CharacterBody3D/Origin/Camera/BoundsCheck" to="." method="_on_bounds_check_body_exited"]
-[connection signal="button_pressed" from="CharacterBody3D/Origin/LeftController" to="." method="_on_left_controller_button_pressed"]
-[connection signal="button_released" from="CharacterBody3D/Origin/LeftController" to="." method="_on_left_controller_button_released"]
-[connection signal="input_axis_changed" from="CharacterBody3D/Origin/LeftController" to="." method="_on_controller_input_axis_changed"]
+[connection signal="button_pressed" from="CharacterBody3D/Origin/LeftController" to="." method="_on_controller_button_pressed" binds= [1]]
+[connection signal="button_released" from="CharacterBody3D/Origin/LeftController" to="." method="_on_controller_button_released" binds= [1]]
+[connection signal="input_axis_changed" from="CharacterBody3D/Origin/LeftController" to="." method="_on_controller_input_axis_changed" binds= [1]]
+[connection signal="input_value_changed" from="CharacterBody3D/Origin/LeftController" to="." method="_on_controller_input_value_changed" binds= [1]]
 [connection signal="teleported" from="CharacterBody3D/Origin/LeftController/Teleporter" to="." method="_on_teleporter_teleported"]
-[connection signal="button_pressed" from="CharacterBody3D/Origin/RightController" to="." method="_on_right_controller_button_pressed"]
-[connection signal="button_released" from="CharacterBody3D/Origin/RightController" to="." method="_on_right_controller_button_released"]
-[connection signal="input_axis_changed" from="CharacterBody3D/Origin/RightController" to="." method="_on_controller_input_axis_changed"]
+[connection signal="button_pressed" from="CharacterBody3D/Origin/RightController" to="." method="_on_controller_button_pressed" binds= [2]]
+[connection signal="button_released" from="CharacterBody3D/Origin/RightController" to="." method="_on_controller_button_released" binds= [2]]
+[connection signal="input_axis_changed" from="CharacterBody3D/Origin/RightController" to="." method="_on_controller_input_axis_changed" binds= [2]]
+[connection signal="input_value_changed" from="CharacterBody3D/Origin/RightController" to="." method="_on_controller_input_value_changed" binds= [2]]
 [connection signal="teleported" from="CharacterBody3D/Origin/RightController/Teleporter" to="." method="_on_teleporter_teleported"]
 [connection signal="animation_finished" from="OutOfBoundsPlayer" to="." method="_on_out_of_bounds_player_animation_finished"]

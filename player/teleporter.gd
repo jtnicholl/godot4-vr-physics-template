@@ -12,11 +12,11 @@ const _NO_TELEPORT_COLOR = Color.ORANGE_RED
 @onready var _target := $CollisionCheck/Target as MeshInstance3D
 
 
-func _ready():
+func _ready() -> void:
 	set_physics_process(false)
 
 
-func _physics_process(_delta: float):
+func _physics_process(_delta: float) -> void:
 	if is_colliding():
 		_collision_check.global_position = get_collision_point()
 		_collision_check.global_transform.basis = Basis.IDENTITY

@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://dovh5hp82rkfe"]
 
-[ext_resource type="PackedScene" uid="uid://djihtemhsqmbu" path="res://demo/meshes/wall_lamp.glb" id="1_pbcyl"]
-[ext_resource type="PackedScene" uid="uid://bx02wsyp8fuce" path="res://demo/meshes/lamp_shade.glb" id="2_mhbwj"]
+[ext_resource type="PackedScene" uid="uid://cxbxru20qn22u" path="res://demo/meshes/wall_lamp.glb" id="1_pbcyl"]
+[ext_resource type="PackedScene" uid="uid://cjxl68pyl4qvx" path="res://demo/meshes/lamp_shade.glb" id="2_mhbwj"]
 
 [sub_resource type="BoxShape3D" id="1"]
 size = Vector3(0.1, 0.2, 0.02)

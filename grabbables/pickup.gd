@@ -5,10 +5,11 @@ class_name Pickup extends Grabbable
 
 var _holder: Node3D = null
 var _collision_shapes: Array[CollisionShape3D] = []
-@onready var _original_parent := get_parent()
+@onready var _original_parent := get_parent() as Node3D
 
 
 func _ready():
+	super()
 	for current_child in get_children():
 		if current_child is CollisionShape3D:
 			_collision_shapes.append(current_child)

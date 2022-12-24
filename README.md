@@ -1,5 +1,3 @@
-Porting this project to Godot 4.0 is still a work in progress. This is not intended for use yet.
-
 # Godot VR Physics Template
 This is a basic template for a VR application in Godot with physical hands that interact with the environment, and cannot go through walls or other solid objects. The player can pick up items, and those too cannot be pushed through walls. It also provides other expected VR functionality such as turning and teleporting, as well as some other basic features for any application including loading settings at runtime from a config file.
 
@@ -11,7 +9,7 @@ Many VR games use a very simple system for the player's hands. The hand copies t
 This is the system used by all VR Godot projects I could find online. Its obvious limitation being that the player's hands and any objects they pick up simply phase through walls with no collision.
 ### New method
 This template takes a different approach to hands. For each hand it involves:
-- The XRController node built into Godot. This copies the position of the controller.
+- The XRController3D node built into Godot. This copies the position of the controller.
 - A "hand anchor," which is a CharacterBody3D with a small shpere shape. It uses `move_and_slide` to copy the position of the controller, but without passing through the environment.
 - A hand node, which is a RigidBody3D that uses `_integrate_forces` to losely copy the rotation of the controller. This is also where the hand is visually displayed.
 - A PinJoint3D node that moves the hand node to the hand anchor node. Since the hand anchor won't pass through walls, this is never too extreme of a force.

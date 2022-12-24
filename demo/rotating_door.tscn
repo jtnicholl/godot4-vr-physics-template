@@ -18,11 +18,6 @@ radius = 0.02
 radius = 0.045
 
 [node name="RotatingDoor" instance=ExtResource("1")]
-axis_lock_linear_x = true
-axis_lock_linear_y = true
-axis_lock_linear_z = true
-axis_lock_angular_x = true
-axis_lock_angular_z = true
 angular_damp = 0.5
 
 [node name="FrontKnob" type="Marker3D" parent="GrabPoints" index="0"]

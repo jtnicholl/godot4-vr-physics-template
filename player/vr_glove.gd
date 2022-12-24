@@ -6,9 +6,15 @@ var _flattened := false
 @onready var _tree := $AnimationTree as AnimationTree
 
 
-func _process(delta: float):
-	_tree[&"parameters/blend/blend_amount"] = clamp(_tree[&"parameters/blend/blend_amount"] \
-			+ (delta * -4.0 if _flattened else delta * 4.0), -1.0, 0.0)
+func _process(delta: float) -> void:
+	_tree.set(
+		&"parameters/blend/blend_amount",\
+		clampf(
+			_tree.get(&"parameters/blend/blend_amount") + (delta * -4.0 if _flattened else delta * 4.0),
+			-1.0,
+			0.0
+		)
+	)
 
 
 func flatten() -> void:

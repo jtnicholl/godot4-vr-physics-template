@@ -17,16 +17,16 @@ var _previous_position := Vector3.ZERO
 		* Vector3(1, -1, 1)
 
 
-func _ready():
+func _ready() -> void:
 	assert(is_instance_valid(_controller), "Controller path was not set correctly for " + name)
 
 
-func _physics_process(delta: float):
+func _physics_process(delta: float) -> void:
 	velocity = (global_transform.origin - _previous_position) / delta
 	_previous_position = global_transform.origin
 
 
-func _integrate_forces(state: PhysicsDirectBodyState3D):
+func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	if state.get_contact_count() == 0:
 		_copy_rotation(state, _time_since_contact) # TODO this does not take delta into account correctly
 		_time_since_contact += state.step
@@ -41,12 +41,12 @@ func _integrate_forces(state: PhysicsDirectBodyState3D):
 func _copy_rotation(state: PhysicsDirectBodyState3D, weight: float) -> void:
 	state.transform.basis = state.transform.basis.slerp(
 		(_controller.global_transform.basis * offset_rotation).orthonormalized(),
-		min(weight, 1.0)
+		minf(weight, 1.0)
 	)
 	state.angular_velocity = Vector3.ZERO
 
 
 func _contact_is_on_lower_corner(local_position: Vector3) -> bool:
-	local_position.x = abs(local_position.x)
-	local_position.z = abs(local_position.z)
+	local_position.x = absf(local_position.x)
+	local_position.z = absf(local_position.z)
 	return is_zero_approx(local_position.distance_squared_to(_positive_corner))

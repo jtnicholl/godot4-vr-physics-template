@@ -9,14 +9,23 @@ signal bounds_escaped()
 @export var fall_speed := 1.0
 
 var teleporting_enabled: bool
-var continuous_locomotion_enabled: bool
+var continuous_locomotion_enabled: bool:
+	get:
+		return continuous_locomotion_enabled
+	set(value):
+		continuous_locomotion_enabled = value
+		if not value:
+			_walking = false
 var locomotion_direction_source: Settings.LocomotionDirectionSource
 var locomotion_update_mode: Settings.LocomotionUpdateMode
 
 var _left_grabbable: Grabbable = null
 var _right_grabbable: Grabbable = null
 var _walking_input := Vector2.ZERO
+var _turning_input := 0.0
 var _locomotion_direction: float
+var _walking := false
+var _turning := false
 
 @onready var _body := $CharacterBody3D as CharacterBody3D
 @onready var _collision_shape := $CharacterBody3D/CollisionShape3D as CollisionShape3D
@@ -31,9 +40,9 @@ var _locomotion_direction: float
 @onready var _out_of_bounds_player := $OutOfBoundsPlayer as AnimationPlayer
 
 
-func _physics_process(_delta: float):
+func _physics_process(delta: float) -> void:
 	_update_collision()
-	if can_move and continuous_locomotion_enabled and not _walking_input.is_zero_approx():
+	if can_move and _walking and not _walking_input.is_zero_approx():
 		if locomotion_update_mode == Settings.LocomotionUpdateMode.CONTINUOUS:
 			_update_locomotion_direction()
 		var movement := _walking_input.rotated(-_locomotion_direction)
@@ -42,6 +51,8 @@ func _physics_process(_delta: float):
 	elif not _body.is_on_floor():
 		_body.velocity = Vector3.DOWN * fall_speed
 		_body.move_and_slide()
+	if _turning:
+		rotate_head(_turning_input * delta)
 
 
 func position_feet(global_position: Vector3) -> void:
@@ -77,8 +88,8 @@ func set_hand_offset(position: Vector3, rotation: Vector3) -> void:
 func _update_collision() -> void:
 	_collision_shape.position.x = _camera.position.x
 	_collision_shape.position.z = _camera.position.z
-	_collision_shape.position.y = _camera.position.y / 2.0
-	_shape.height = _camera.position.y
+	_collision_shape.position.y = _camera.position.y / 2.0 + _shape.radius
+	_shape.height = _camera.position.y + _shape.radius * 2.0
 
 
 func _try_grab(tracker_hand: XRPositionalTracker.TrackerHand) -> void:
@@ -107,100 +118,136 @@ func _update_locomotion_direction() -> void:
 			_locomotion_direction = _right_controller.global_transform.basis.get_euler().y
 
 
-func _on_teleport_left_action_pressed():
+func _on_teleport_left_action_pressed() -> void:
 	if can_move and teleporting_enabled:
 		_right_teleporter.cancel()
 		_left_teleporter.press()
 
 
-func _on_teleport_left_action_released():
+func _on_teleport_left_action_released() -> void:
 	_left_teleporter.release()
 
 
-func _on_teleport_right_action_pressed():
+func _on_teleport_right_action_pressed() -> void:
 	if can_move:
 		_left_teleporter.cancel()
 		_right_teleporter.press()
 
 
-func _on_teleport_right_action_released():
+func _on_teleport_right_action_released() -> void:
 	_right_teleporter.release()
 
 
-func _on_teleporter_teleported(global_position: Vector3):
+func _on_teleporter_teleported(global_position: Vector3) -> void:
 	if can_move:
 		position_feet(global_position)
 
 
-func _on_turn_left_action_pressed():
+func _snap_turn_left() -> void:
 	rotate_head(-PI / 4.0)
 
 
-func _on_turn_right_action_pressed():
+func _snap_turn_right() -> void:
 	rotate_head(PI / 4.0)
 
 
-func _on_grab_left_action_pressed():
+func _on_grab_left_action_pressed() -> void:
 	_try_grab.call_deferred(XRPositionalTracker.TRACKER_HAND_LEFT)
 
 
-func _on_grab_left_action_released():
+func _on_grab_left_action_released() -> void:
 	if is_instance_valid(_left_grabbable):
 		_left_grabbable.release(_left_hand.velocity * impulse_multiplier)
 	_left_grabbable = null
 
 
-func _on_grab_right_action_pressed():
+func _on_grab_right_action_pressed() -> void:
 	_try_grab.call_deferred(XRPositionalTracker.TRACKER_HAND_RIGHT)
 
 
-func _on_grab_right_action_released():
+func _on_grab_right_action_released() -> void:
 	if is_instance_valid(_right_grabbable):
 		_right_grabbable.release(_right_hand.velocity * impulse_multiplier)
 	_right_grabbable = null
 
 
-func _on_bounds_check_body_entered(_body: Node):
+func _on_bounds_check_body_entered(_body: Node) -> void:
 	_out_of_bounds_player.play(&"out_of_bounds")
 
 
-func _on_bounds_check_body_exited(_body: Node):
+func _on_bounds_check_body_exited(_body: Node) -> void:
 	_out_of_bounds_player.play(&"RESET")
 
 
-func _on_out_of_bounds_player_animation_finished(anim_name: StringName):
+func _on_out_of_bounds_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == &"out_of_bounds":
-		emit_signal(&"bounds_escaped")
+		bounds_escaped.emit()
 
 
-func _on_controller_input_axis_changed(name: StringName, value: Vector2) -> void:
-	if name == &"walk":
-		_walking_input = value
+func _on_controller_input_axis_changed(
+	name: StringName,
+	value: Vector2,
+	_hand: XRPositionalTracker.TrackerHand
+) -> void:
+	if name == &"walk_direction":
+		_walking_input.x = value.x
+		_walking_input.y = -value.y
+	elif name == &"turn_vector":
+		_turning_input = value.x
 
 
-func _on_left_controller_button_pressed(name: StringName) -> void:
+func _on_controller_button_pressed(
+	name: StringName,
+	hand: XRPositionalTracker.TrackerHand
+) -> void:
 	if name == &"grab":
-		_on_grab_left_action_pressed()
+		if hand == XRPositionalTracker.TRACKER_HAND_LEFT:
+			_on_grab_left_action_pressed()
+		else:
+			assert(hand == XRPositionalTracker.TRACKER_HAND_RIGHT)
+			_on_grab_right_action_pressed()
 	elif name == &"teleport":
-		_on_teleport_left_action_pressed()
+		if hand == XRPositionalTracker.TRACKER_HAND_LEFT:
+			_on_teleport_left_action_pressed()
+		else:
+			assert(hand == XRPositionalTracker.TRACKER_HAND_RIGHT)
+			_on_teleport_right_action_pressed()
+	elif name == &"walk":
+		_walking = continuous_locomotion_enabled
+		if _walking:
+			_update_locomotion_direction()
+	elif name == &"turn":
+		_turning = true
 
 
-func _on_left_controller_button_released(name: StringName) -> void:
+func _on_controller_button_released(
+	name: StringName,
+	hand: XRPositionalTracker.TrackerHand
+) -> void:
 	if name == &"grab":
-		_on_grab_left_action_released()
+		if hand == XRPositionalTracker.TRACKER_HAND_LEFT:
+			_on_grab_left_action_released()
+		else:
+			assert(hand == XRPositionalTracker.TRACKER_HAND_RIGHT)
+			_on_grab_right_action_released()
 	elif name == &"teleport":
-		_on_teleport_left_action_released()
+		if hand == XRPositionalTracker.TRACKER_HAND_LEFT:
+			_on_teleport_left_action_released()
+		else:
+			assert(hand == XRPositionalTracker.TRACKER_HAND_RIGHT)
+			_on_teleport_right_action_released()
+	elif name == &"walk":
+		_walking = false
+	elif name == &"turn":
+		_turning = false
 
 
-func _on_right_controller_button_pressed(name: StringName) -> void:
-	if name == &"grab":
-		_on_grab_right_action_pressed()
-	elif name == &"teleport":
-		_on_teleport_right_action_pressed()
-
-
-func _on_right_controller_button_released(name: StringName) -> void:
-	if name == &"grab":
-		_on_grab_right_action_released()
-	elif name == &"teleport":
-		_on_teleport_right_action_released()
+func _on_controller_input_value_changed(
+	name: String,
+	value: float,
+	_hand: XRPositionalTracker.TrackerHand
+) -> void:
+	if name == &"turn_left":
+		_turning_input = -value
+	elif name == &"turn_right":
+		_turning_input = value

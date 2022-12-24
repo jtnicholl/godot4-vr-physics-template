@@ -55,6 +55,7 @@ _data = {
 }
 
 [node name="Teleporter" type="RayCast3D"]
+enabled = false
 target_position = Vector3(0, 0, -10)
 script = ExtResource("1")
 
