@@ -14,7 +14,7 @@ size = Vector2(0.8, 0.8)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0jfjg"]
 render_priority = 0
 shader = ExtResource("2_4kti1")
-shader_parameter/albedo_texture = ExtResource("2")
+shader_parameter/alpha_mask = ExtResource("2")
 
 [sub_resource type="Animation" id="4"]
 length = 0.001
