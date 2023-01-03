@@ -9,6 +9,11 @@
 config_version=5
 
 _global_script_classes=[{
+"base": "Resource",
+"class": &"ControllerSettings",
+"language": &"GDScript",
+"path": "res://controller_defaults/controller_settings.gd"
+}, {
 "base": "RefCounted",
 "class": &"GrabResult",
 "language": &"GDScript",
@@ -65,6 +70,7 @@ _global_script_classes=[{
 "path": "res://player/vr_player.gd"
 }]
 _global_script_class_icons={
+"ControllerSettings": "",
 "GrabResult": "",
 "Grabbable": "",
 "HandAnchor": "",
@@ -94,10 +100,10 @@ Settings="*res://settings.gd"
 gdscript/warnings/shadowed_variable=false
 gdscript/warnings/shadowed_variable_base_class=0
 gdscript/warnings/standalone_expression=2
-gdscript/warnings/void_assignment=2
 gdscript/warnings/property_used_as_function=2
 gdscript/warnings/constant_used_as_function=2
 gdscript/warnings/standalone_ternary=2
+gdscript/warnings/void_assignment=2
 
 [editor_plugins]
 

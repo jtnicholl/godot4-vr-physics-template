@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://2iggc182ovie"]
+
+[ext_resource type="Script" path="res://controller_defaults/controller_settings.gd" id="1_mitfc"]
+
+[resource]
+resource_name = "vive_controller"
+script = ExtResource("1_mitfc")
+hand_offset_position = Vector3(0.05, 0, 0.1)
+hand_offset_rotation = Vector3(0, 0, -0.753)
+walk_require_press = true
+turn_require_press = true

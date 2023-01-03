@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://demo/demo_room.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://x0jg0canycs5" path="res://player/vr_player.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://demo/block.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://cml6wvuvcv5m0" path="res://demo/block.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://p3fsyd0fgb11" path="res://demo/pinwheel.tscn" id="4"]
 [ext_resource type="PackedScene" uid="uid://63ck07v6nfv0" path="res://demo/rotating_door.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://dphdfdoqdc85m" path="res://demo/desk.tscn" id="6"]

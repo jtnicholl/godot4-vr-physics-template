@@ -18,6 +18,8 @@ var continuous_locomotion_enabled: bool:
 			_walking = false
 var locomotion_direction_source: Settings.LocomotionDirectionSource
 var locomotion_update_mode: Settings.LocomotionUpdateMode
+var walk_require_press := false
+var turn_require_press := false
 
 var _left_grabbable: Grabbable = null
 var _right_grabbable: Grabbable = null
@@ -40,9 +42,18 @@ var _turning := false
 @onready var _out_of_bounds_player := $OutOfBoundsPlayer as AnimationPlayer
 
 
+func _ready() -> void:
+	XRServer.get_tracker(&"left_hand").profile_changed.connect(
+		_on_controller_profile_changed.bind(XRPositionalTracker.TRACKER_HAND_LEFT)
+	)
+	XRServer.get_tracker(&"right_hand").profile_changed.connect(
+		_on_controller_profile_changed.bind(XRPositionalTracker.TRACKER_HAND_RIGHT)
+	)
+
+
 func _physics_process(delta: float) -> void:
 	_update_collision()
-	if can_move and _walking and not _walking_input.is_zero_approx():
+	if can_move and (_walking or not walk_require_press) and not _walking_input.is_zero_approx():
 		if locomotion_update_mode == Settings.LocomotionUpdateMode.CONTINUOUS:
 			_update_locomotion_direction()
 		var movement := _walking_input.rotated(-_locomotion_direction)
@@ -51,7 +62,7 @@ func _physics_process(delta: float) -> void:
 	elif not _body.is_on_floor():
 		_body.velocity = Vector3.DOWN * fall_speed
 		_body.move_and_slide()
-	if _turning:
+	if _turning or not turn_require_press:
 		rotate_head(_turning_input * delta)
 
 
@@ -190,6 +201,8 @@ func _on_controller_input_axis_changed(
 	_hand: XRPositionalTracker.TrackerHand
 ) -> void:
 	if name == &"walk_direction":
+		if not walk_require_press and _walking_input.is_zero_approx():
+			_update_locomotion_direction()
 		_walking_input.x = value.x
 		_walking_input.y = -value.y
 	elif name == &"turn_vector":
@@ -212,7 +225,7 @@ func _on_controller_button_pressed(
 		else:
 			assert(hand == XRPositionalTracker.TRACKER_HAND_RIGHT)
 			_on_teleport_right_action_pressed()
-	elif name == &"walk":
+	elif name == &"walk" and walk_require_press:
 		_walking = continuous_locomotion_enabled
 		if _walking:
 			_update_locomotion_direction()
@@ -251,3 +264,10 @@ func _on_controller_input_value_changed(
 		_turning_input = -value
 	elif name == &"turn_right":
 		_turning_input = value
+
+
+func _on_controller_profile_changed(role: String, _hand: XRPositionalTracker.TrackerHand) -> void:
+	var controller_settings := Settings.get_controller_settings(role)
+	set_hand_offset(controller_settings.hand_offset_position, controller_settings.hand_offset_rotation)
+	walk_require_press = controller_settings.walk_require_press
+	turn_require_press = controller_settings.turn_require_press
