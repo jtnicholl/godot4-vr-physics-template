@@ -62,7 +62,7 @@ func get_controller_settings(
 	controller_name: String,
 	from_path := CONTROLLER_SETTINGS_PATH
 ) -> ControllerSettings:
-	var output := load(_DEFAULT_CONTROLLER_SETTINGS[controller_name]) as ControllerSettings
+	var output := load(_DEFAULT_CONTROLLER_SETTINGS.get(controller_name, "")) as ControllerSettings
 	if not is_instance_valid(output):
 		output = ControllerSettings.new()
 	if not is_instance_valid(_controller_settings):
