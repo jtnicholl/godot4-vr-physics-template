@@ -195,20 +195,6 @@ func _on_out_of_bounds_player_animation_finished(anim_name: StringName) -> void:
 		bounds_escaped.emit()
 
 
-func _on_controller_input_axis_changed(
-	name: StringName,
-	value: Vector2,
-	_hand: XRPositionalTracker.TrackerHand
-) -> void:
-	if name == &"walk_direction":
-		if not walk_require_press and _walking_input.is_zero_approx():
-			_update_locomotion_direction()
-		_walking_input.x = value.x
-		_walking_input.y = -value.y
-	elif name == &"turn_vector":
-		_turning_input = value.x
-
-
 func _on_controller_button_pressed(
 	name: StringName,
 	hand: XRPositionalTracker.TrackerHand
@@ -255,7 +241,7 @@ func _on_controller_button_released(
 		_turning = false
 
 
-func _on_controller_input_value_changed(
+func _on_controller_input_float_changed(
 	name: String,
 	value: float,
 	_hand: XRPositionalTracker.TrackerHand
@@ -264,6 +250,20 @@ func _on_controller_input_value_changed(
 		_turning_input = -value
 	elif name == &"turn_right":
 		_turning_input = value
+
+
+func _on_controller_input_vector2_changed(
+	name: StringName,
+	value: Vector2,
+	_hand: XRPositionalTracker.TrackerHand
+) -> void:
+	if name == &"walk_direction":
+		if not walk_require_press and _walking_input.is_zero_approx():
+			_update_locomotion_direction()
+		_walking_input.x = value.x
+		_walking_input.y = -value.y
+	elif name == &"turn_vector":
+		_turning_input = value.x
 
 
 func _on_controller_profile_changed(role: String, _hand: XRPositionalTracker.TrackerHand) -> void:
