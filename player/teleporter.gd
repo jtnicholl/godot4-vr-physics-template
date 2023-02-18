@@ -53,4 +53,4 @@ func _stop() -> void:
 func _can_teleport() -> bool:
 	return is_colliding() and \
 			_collision_check.get_overlapping_bodies().is_empty() and \
-			global_transform.origin.distance_to(get_collision_point()) <= max_distance
+			global_position.distance_to(get_collision_point()) <= max_distance

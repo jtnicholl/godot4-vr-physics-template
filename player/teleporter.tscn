@@ -65,7 +65,6 @@ script = ExtResource("1")
 visible = false
 collision_layer = 4
 input_ray_pickable = false
-monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionCheck"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
