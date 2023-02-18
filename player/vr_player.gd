@@ -18,6 +18,7 @@ var continuous_locomotion_enabled: bool:
 			_walking = false
 var locomotion_direction_source: Settings.LocomotionDirectionSource
 var locomotion_update_mode: Settings.LocomotionUpdateMode
+var smooth_turning := false
 var walk_require_press := false
 var turn_require_press := false
 
@@ -62,28 +63,36 @@ func _physics_process(delta: float) -> void:
 	elif not _body.is_on_floor():
 		_body.velocity = Vector3.DOWN * fall_speed
 		_body.move_and_slide()
-	if _turning or not turn_require_press:
-		rotate_head(_turning_input * delta)
+	if smooth_turning and (_turning or not turn_require_press):
+		smooth_turn(_turning_input * delta)
 
 
 func position_feet(global_position: Vector3) -> void:
 	var camera_offset := _camera.global_position - self.global_position
 	_body.position.y = 0.0
 	camera_offset.y = 0.0
-	global_transform.origin = global_position - camera_offset
+	global_position = global_position - camera_offset
 
 
 func position_head(global_position: Vector3) -> void:
-	var camera_offset := _camera.global_transform.origin - global_transform.origin
-	global_transform.origin = global_position - camera_offset
+	var camera_offset := _camera.global_position - global_position
+	self.global_position = global_position - camera_offset
 
 
-func rotate_head(radians: float) -> void:
-	var camera_offset := _camera.global_transform.origin - self.global_transform.origin
+func snap_turn(radians: float) -> void:
+	var camera_offset := _camera.global_position - self.global_position
 	var camera_offset_2d := Vector2(camera_offset.x, camera_offset.z)
 	var camera_offset_difference := camera_offset_2d - camera_offset_2d.rotated(radians)
 	rotate_y(-radians)
 	global_translate(Vector3(camera_offset_difference.x, 0.0, camera_offset_difference.y))
+
+
+func smooth_turn(radians: float) -> void:
+	var camera_offset := _camera.position
+	var camera_offset_2d := Vector2(camera_offset.x, camera_offset.z)
+	var camera_offset_difference := camera_offset_2d - camera_offset_2d.rotated(radians)
+	_body.rotate_y(-radians)
+	_body.translate(Vector3(camera_offset_difference.x, 0.0, camera_offset_difference.y))
 
 
 func set_hand_offset(position: Vector3, rotation: Vector3) -> void:
@@ -129,6 +138,17 @@ func _update_locomotion_direction() -> void:
 			_locomotion_direction = _right_controller.global_transform.basis.get_euler().y
 
 
+func _update_turning_input(value: float) -> void:
+	if not smooth_turning and not turn_require_press:
+		if not _turning:
+			_turning = not is_zero_approx(value)
+			if _turning:
+				snap_turn(PI / 4.0 if value > 0.0 else -PI / 4.0)
+		else:
+			_turning = not is_zero_approx(value)
+	_turning_input = value
+
+
 func _on_teleport_left_action_pressed() -> void:
 	if can_move and teleporting_enabled:
 		_right_teleporter.cancel()
@@ -152,14 +172,6 @@ func _on_teleport_right_action_released() -> void:
 func _on_teleporter_teleported(global_position: Vector3) -> void:
 	if can_move:
 		position_feet(global_position)
-
-
-func _snap_turn_left() -> void:
-	rotate_head(-PI / 4.0)
-
-
-func _snap_turn_right() -> void:
-	rotate_head(PI / 4.0)
 
 
 func _on_grab_left_action_pressed() -> void:
@@ -215,7 +227,9 @@ func _on_controller_button_pressed(
 		_walking = continuous_locomotion_enabled
 		if _walking:
 			_update_locomotion_direction()
-	elif name == &"turn":
+	elif name == &"turn" and turn_require_press:
+		if not smooth_turning and not _turning and not is_zero_approx(_turning_input):
+			snap_turn(PI / 4.0 if _turning_input > 0.0 else -PI / 4.0)
 		_turning = true
 
 
@@ -237,7 +251,7 @@ func _on_controller_button_released(
 			_on_teleport_right_action_released()
 	elif name == &"walk":
 		_walking = false
-	elif name == &"turn":
+	elif name == &"turn" and turn_require_press:
 		_turning = false
 
 
@@ -247,9 +261,9 @@ func _on_controller_input_float_changed(
 	_hand: XRPositionalTracker.TrackerHand
 ) -> void:
 	if name == &"turn_left":
-		_turning_input = -value
+		_update_turning_input(-value)
 	elif name == &"turn_right":
-		_turning_input = value
+		_update_turning_input(value)
 
 
 func _on_controller_input_vector2_changed(
@@ -263,7 +277,7 @@ func _on_controller_input_vector2_changed(
 		_walking_input.x = value.x
 		_walking_input.y = -value.y
 	elif name == &"turn_vector":
-		_turning_input = value.x
+		_update_turning_input(value.x)
 
 
 func _on_controller_profile_changed(role: String, _hand: XRPositionalTracker.TrackerHand) -> void:

@@ -17,6 +17,7 @@ var teleporting_enabled: bool
 var continuous_locomotion_enabled: bool
 var locomotion_direction_source: LocomotionDirectionSource
 var locomotion_update_mode: LocomotionUpdateMode
+var smooth_turning: bool
 
 var _controller_settings: ConfigFile
 
@@ -40,6 +41,7 @@ func load_settings(from_path: String = SETTINGS_FILE_PATH) -> int:
 		"update_mode",
 		LocomotionUpdateMode.ONCE
 	)
+	smooth_turning = config_file.get_value("turning", "smooth_turning", false)
 	
 	return error_code
 
@@ -54,6 +56,7 @@ func save_settings(to_path: String = SETTINGS_FILE_PATH) -> int:
 	config_file.set_value("continuous_locomotion", "enabled", continuous_locomotion_enabled)
 	config_file.set_value("continuous_locomotion", "direction_source", locomotion_direction_source)
 	config_file.set_value("continuous_locomotion", "update_mode", locomotion_update_mode)
+	config_file.set_value("turning", "smooth_turning", smooth_turning)
 	
 	return config_file.save(to_path)
 
@@ -133,3 +136,4 @@ func apply_to_player(player: VRPlayer) -> void:
 	player.continuous_locomotion_enabled = self.continuous_locomotion_enabled
 	player.locomotion_direction_source = self.locomotion_direction_source
 	player.locomotion_update_mode = self.locomotion_update_mode
+	player.smooth_turning = self.smooth_turning
