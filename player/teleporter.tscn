@@ -18,6 +18,7 @@ shader_parameter/alpha_mask = ExtResource("2")
 
 [sub_resource type="Animation" id="4"]
 length = 0.001
+loop_mode = 1
 tracks/0/type = "rotation_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -40,6 +41,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="5"]
 resource_name = "spin"
+loop_mode = 1
 tracks/0/type = "rotation_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -70,7 +72,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("1")
 
 [node name="Target" type="MeshInstance3D" parent="CollisionCheck"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 layers = 4
 instance_shader_parameters/current_color = Color(1, 1, 1, 1)
 mesh = SubResource("2")
