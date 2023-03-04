@@ -43,15 +43,6 @@ var _turning := false
 @onready var _out_of_bounds_player := $OutOfBoundsPlayer as AnimationPlayer
 
 
-func _ready() -> void:
-	XRServer.get_tracker(&"left_hand").profile_changed.connect(
-		_on_controller_profile_changed.bind(XRPositionalTracker.TRACKER_HAND_LEFT)
-	)
-	XRServer.get_tracker(&"right_hand").profile_changed.connect(
-		_on_controller_profile_changed.bind(XRPositionalTracker.TRACKER_HAND_RIGHT)
-	)
-
-
 func _physics_process(delta: float) -> void:
 	_update_collision()
 	if can_move and (_walking or not walk_require_press) and not _walking_input.is_zero_approx():
@@ -95,7 +86,13 @@ func smooth_turn(radians: float) -> void:
 	_body.translate(Vector3(camera_offset_difference.x, 0.0, camera_offset_difference.y))
 
 
-func set_hand_offset(position: Vector3, rotation: Vector3) -> void:
+func set_controller_settings(controller_settings: ControllerSettings) -> void:
+	_set_hand_offset(controller_settings.hand_offset_position, controller_settings.hand_offset_rotation)
+	walk_require_press = controller_settings.walk_require_press
+	turn_require_press = controller_settings.turn_require_press
+
+
+func _set_hand_offset(position: Vector3, rotation: Vector3) -> void:
 	($RightHandAnchor as HandAnchor).offset_position = position
 	position.x = -position.x
 	($LeftHandAnchor as HandAnchor).offset_position = position
@@ -278,10 +275,3 @@ func _on_controller_input_vector2_changed(
 		_walking_input.y = -value.y
 	elif name == &"turn_vector":
 		_update_turning_input(value.x)
-
-
-func _on_controller_profile_changed(role: String, _hand: XRPositionalTracker.TrackerHand) -> void:
-	var controller_settings := Settings.get_controller_settings(role)
-	set_hand_offset(controller_settings.hand_offset_position, controller_settings.hand_offset_rotation)
-	walk_require_press = controller_settings.walk_require_press
-	turn_require_press = controller_settings.turn_require_press
