@@ -65,9 +65,9 @@ func get_controller_settings(
 	controller_name: String,
 	from_path := CONTROLLER_SETTINGS_PATH
 ) -> ControllerSettings:
-	var output := load(_DEFAULT_CONTROLLER_SETTINGS.get(controller_name, "")) as ControllerSettings
-	if not is_instance_valid(output):
-		output = ControllerSettings.new()
+	var output := load(
+		_DEFAULT_CONTROLLER_SETTINGS.get(controller_name, "res://controller_defaults/default.tres")
+	) as ControllerSettings
 	if not is_instance_valid(_controller_settings):
 		_controller_settings = ConfigFile.new()
 		_controller_settings.load(from_path)
@@ -93,6 +93,7 @@ func get_controller_settings(
 			"turn_require_press",
 			output.turn_require_press
 		)
+		output.pose = _controller_settings.get_value(controller_name, "pose", output.pose)
 	else:
 		_controller_settings.set_value(
 			controller_name,
@@ -114,6 +115,7 @@ func get_controller_settings(
 			"turn_require_press",
 			output.turn_require_press
 		)
+		_controller_settings.set_value(controller_name, "pose", output.pose)
 	
 	return output
 

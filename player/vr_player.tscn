@@ -79,14 +79,12 @@ shape = SubResource("2")
 [node name="LeftController" parent="CharacterBody3D/Origin" instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 1, 0)
 tracker = &"left_hand"
-pose = &"aim"
 
 [node name="Teleporter" parent="CharacterBody3D/Origin/LeftController" instance=ExtResource("7")]
 
 [node name="RightController" parent="CharacterBody3D/Origin" instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 1, 0)
 tracker = &"right_hand"
-pose = &"aim"
 
 [node name="Teleporter" parent="CharacterBody3D/Origin/RightController" instance=ExtResource("7")]
 

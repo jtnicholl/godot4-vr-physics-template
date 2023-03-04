@@ -90,6 +90,8 @@ func set_controller_settings(controller_settings: ControllerSettings) -> void:
 	_set_hand_offset(controller_settings.hand_offset_position, controller_settings.hand_offset_rotation)
 	walk_require_press = controller_settings.walk_require_press
 	turn_require_press = controller_settings.turn_require_press
+	_left_controller.pose = controller_settings.pose
+	_right_controller.pose = controller_settings.pose
 
 
 func _set_hand_offset(position: Vector3, rotation: Vector3) -> void:
