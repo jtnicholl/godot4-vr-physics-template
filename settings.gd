@@ -5,6 +5,8 @@ const SETTINGS_FILE_PATH := "user://settings.cfg"
 const CONTROLLER_SETTINGS_PATH := "user://controller_settings.cfg"
 const _DEFAULT_CONTROLLER_SETTINGS := {
 	"/interaction_profiles/htc/vive_controller" = "res://controller_defaults/vive_controller.tres",
+	"/interaction_profiles/oculus/touch_controller" = "res://controller_defaults/touch_controller.tres",
+	"/interaction_profiles/valve/index_controller" = "res://controller_defaults/index_controller.tres",
 }
 
 enum LocomotionDirectionSource { HEAD, LEFT_CONTROLLER, RIGHT_CONTROLLER }

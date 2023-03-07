@@ -9,4 +9,4 @@ hand_offset_position = Vector3(0, 0, 0)
 hand_offset_rotation = Vector3(0, 0, 0)
 walk_require_press = false
 turn_require_press = false
-pose = &"default"
+pose = &"grip"

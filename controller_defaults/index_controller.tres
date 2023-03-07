@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ControllerSettings" load_steps=2 format=3 uid="uid://np1n6ie0p1d0"]
+
+[ext_resource type="Script" path="res://controller_defaults/controller_settings.gd" id="1_cb5sk"]
+
+[resource]
+resource_name = "index_controller"
+script = ExtResource("1_cb5sk")
+hand_offset_position = Vector3(0, 0, 0)
+hand_offset_rotation = Vector3(0, 0, 0)
+walk_require_press = false
+turn_require_press = false
+pose = &"grip"
