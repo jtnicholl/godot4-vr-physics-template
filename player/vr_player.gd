@@ -36,6 +36,8 @@ var _turning := false
 @onready var _right_controller := $CharacterBody3D/Origin/RightController as VRController
 @onready var _left_hand := $LeftHand as VRHand
 @onready var _right_hand := $RightHand as VRHand
+@onready var _left_glove := $LeftHand/VRGlove as VRGlove
+@onready var _right_glove := $RightHand/VRGlove as VRGlove
 @onready var _left_teleporter := $CharacterBody3D/Origin/LeftController/Teleporter as Teleporter
 @onready var _right_teleporter := $CharacterBody3D/Origin/RightController/Teleporter as Teleporter
 @onready var _camera := $CharacterBody3D/Origin/Camera as XRCamera3D
@@ -116,7 +118,7 @@ func _try_grab(tracker_hand: XRPositionalTracker.TrackerHand) -> void:
 			XRPositionalTracker.TRACKER_HAND_LEFT else _right_controller
 	var hand := _left_hand if tracker_hand == \
 			XRPositionalTracker.TRACKER_HAND_LEFT else _right_hand
-	var result := controller.try_grab(0.2)
+	var result: GrabResult = controller.try_grab(0.2)
 	if result.grabbable != null:
 		hand.global_transform = result.grab_point.global_transform
 		hand.translate_object_local(controller.grab_offset)
@@ -175,22 +177,26 @@ func _on_teleporter_teleported(global_position: Vector3) -> void:
 
 func _on_grab_left_action_pressed() -> void:
 	_try_grab.call_deferred(XRPositionalTracker.TRACKER_HAND_LEFT)
+	_left_glove.grip()
 
 
 func _on_grab_left_action_released() -> void:
 	if is_instance_valid(_left_grabbable):
 		_left_grabbable.release(_left_hand.velocity * impulse_multiplier)
 	_left_grabbable = null
+	_left_glove.release()
 
 
 func _on_grab_right_action_pressed() -> void:
 	_try_grab.call_deferred(XRPositionalTracker.TRACKER_HAND_RIGHT)
+	_right_glove.grip()
 
 
 func _on_grab_right_action_released() -> void:
 	if is_instance_valid(_right_grabbable):
 		_right_grabbable.release(_right_hand.velocity * impulse_multiplier)
 	_right_grabbable = null
+	_right_glove.release()
 
 
 func _on_bounds_check_body_entered(_body: Node) -> void:

@@ -1,36 +1,54 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://1ckb1cxbht7b"]
 
-[ext_resource path="res://player/vr_glove/vr_glove.glb" type="PackedScene" id=1]
-[ext_resource path="res://player/vr_glove.gd" type="Script" id=2]
+[ext_resource type="PackedScene" uid="uid://ccpxbf3e647yh" path="res://player/vr_glove/vr_glove.glb" id="1"]
+[ext_resource type="Script" path="res://player/vr_glove.gd" id="2"]
 
-[sub_resource type="AnimationNodeBlend3" id=5]
+[sub_resource type="AnimationNodeBlend3" id="5"]
 
-[sub_resource type="AnimationNodeAnimation" id=4]
-animation = "flat"
+[sub_resource type="AnimationNodeAnimation" id="4"]
+animation = &"flat"
 
-[sub_resource type="AnimationNodeAnimation" id=3]
-animation = "grip"
+[sub_resource type="AnimationNodeAnimation" id="3"]
+animation = &"grip"
 
-[sub_resource type="AnimationNodeAnimation" id=2]
-animation = "rest"
+[sub_resource type="AnimationNodeAnimation" id="2"]
+animation = &"rest"
 
-[sub_resource type="AnimationNodeBlendTree" id=1]
-graph_offset = Vector2( -177.003, -23.5014 )
-nodes/blend/node = SubResource( 5 )
-nodes/blend/position = Vector2( 80, 100 )
-nodes/flat/node = SubResource( 4 )
-nodes/flat/position = Vector2( -160, 10 )
-nodes/grip/node = SubResource( 3 )
-nodes/grip/position = Vector2( -170, 240 )
-nodes/rest/node = SubResource( 2 )
-nodes/rest/position = Vector2( -170, 130 )
-node_connections = [ "blend", 0, "flat", "blend", 1, "rest", "blend", 2, "grip", "output", 0, "blend" ]
+[sub_resource type="AnimationNodeBlendTree" id="1"]
+graph_offset = Vector2(-601.351, 0.648758)
+nodes/blend/node = SubResource("5")
+nodes/blend/position = Vector2(80, 100)
+nodes/flat/node = SubResource("4")
+nodes/flat/position = Vector2(-160, 10)
+nodes/grip/node = SubResource("3")
+nodes/grip/position = Vector2(-170, 240)
+nodes/rest/node = SubResource("2")
+nodes/rest/position = Vector2(-170, 130)
+node_connections = [&"output", 0, &"blend", &"blend", 0, &"flat", &"blend", 1, &"rest", &"blend", 2, &"grip"]
 
-[node name="VRGlove" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
+[node name="VRGlove" instance=ExtResource("1")]
+script = ExtResource("2")
+
+[node name="Skeleton3D" parent="Skeleton" index="0"]
+bones/0/rotation = Quaternion(0.5, -0.5, 0.5, -0.5)
+bones/2/rotation = Quaternion(-0.345129, -0.704294, -0.113287, 0.609936)
+bones/3/rotation = Quaternion(0.246378, 6.08805e-05, -0.00137195, 0.969173)
+bones/5/rotation = Quaternion(0.10392, 0.986411, 0.0953988, -0.0842235)
+bones/6/rotation = Quaternion(0.241404, 0.00162343, -0.0528869, 0.968981)
+bones/8/rotation = Quaternion(0.0764578, 3.1375e-05, -0.00116582, 0.997072)
+bones/9/rotation = Quaternion(0.012462, 0.993949, 0.101224, -0.0407885)
+bones/10/rotation = Quaternion(0.229163, -1.0961e-07, -0.000185488, 0.973388)
+bones/11/rotation = Quaternion(0.157396, 9.34075e-05, -0.00368819, 0.987529)
+bones/12/rotation = Quaternion(0.141276, -0.000107424, 0.0041254, 0.989962)
+bones/14/rotation = Quaternion(0.220369, -0.000901299, -0.0409569, 0.974556)
+bones/19/rotation = Quaternion(0.132523, 0.000382735, -0.011456, 0.991114)
+bones/20/rotation = Quaternion(0.108581, -0.000538472, 0.0127024, 0.994006)
+
+[node name="Mesh" parent="Skeleton/Skeleton3D" index="0"]
+layers = 4
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="2"]
-tree_root = SubResource( 1 )
+tree_root = SubResource("1")
 anim_player = NodePath("../AnimationPlayer")
 active = true
-parameters/blend/blend_amount = 0
+parameters/blend/blend_amount = 0.0

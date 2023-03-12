@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://c1tn0kuu0bhs8" path="res://player/vr_hand.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://player/hand_anchor.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://player/vr_hand_joint.tscn" id="5"]
-[ext_resource type="PackedScene" path="res://player/vr_glove.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://1ckb1cxbht7b" path="res://player/vr_glove.tscn" id="6"]
 [ext_resource type="PackedScene" uid="uid://br0gkpoe41arf" path="res://player/teleporter.tscn" id="7"]
 
 [sub_resource type="CapsuleShape3D" id="1"]

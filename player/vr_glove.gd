@@ -1,20 +1,22 @@
 class_name VRGlove extends Node3D
 
 
+var _gripping := false
 var _flattened := false
 
 @onready var _tree := $AnimationTree as AnimationTree
 
 
 func _process(delta: float) -> void:
-	_tree.set(
-		&"parameters/blend/blend_amount",\
-		clampf(
-			_tree.get(&"parameters/blend/blend_amount") + (delta * -4.0 if _flattened else delta * 4.0),
-			-1.0,
-			0.0
-		)
-	)
+	var current: float = _tree.get(&"parameters/blend/blend_amount")
+	var new: float
+	if _gripping:
+		new = 1.0
+	elif _flattened:
+		new = -1.0
+	else:
+		new = 0.0
+	_tree.set(&"parameters/blend/blend_amount", move_toward(current, new, delta * 4.0))
 
 
 func flatten() -> void:
@@ -26,4 +28,8 @@ func rest() -> void:
 
 
 func grip() -> void:
-	pass # TODO
+	_gripping = true
+
+
+func release() -> void:
+	_gripping = false

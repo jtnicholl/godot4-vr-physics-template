@@ -1,7 +1,7 @@
 class_name VRController extends XRController3D
 
 
-@onready var grab_offset: Vector3 = -($GrabRange as Area3D).position
+@onready var grab_offset := -($GrabRange as Area3D).position
 
 @onready var _mesh := $Mesh as MeshInstance3D
 @onready var _grab_range := $GrabRange as Area3D
@@ -26,7 +26,7 @@ func try_grab(max_distance := INF) -> GrabResult:
 	for current_body in _grab_range.get_overlapping_bodies():
 		if not (current_body is Grabbable):
 			continue
-		for current_point in current_body.grab_points:
+		for current_point in (current_body as Grabbable).grab_points:
 			var current_distance := \
 					(current_point as Node3D).global_position \
 					.distance_squared_to(self.global_position)

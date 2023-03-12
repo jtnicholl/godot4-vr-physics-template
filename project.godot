@@ -27,7 +27,6 @@ gdscript/warnings/standalone_expression=2
 gdscript/warnings/property_used_as_function=2
 gdscript/warnings/constant_used_as_function=2
 gdscript/warnings/standalone_ternary=2
-gdscript/warnings/void_assignment=2
 
 [editor_plugins]
 
