@@ -1,6 +1,8 @@
+## A physics object that can be grabbed by the player.
 class_name Grabbable extends RigidBody3D
 
 
+## The grabbable positions on this node.
 var grab_points: Array[Node3D] = []
 
 

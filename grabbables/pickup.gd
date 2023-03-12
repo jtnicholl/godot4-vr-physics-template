@@ -1,6 +1,9 @@
+## A grabbable object that the player can pick up, carry, and potentially throw.
 class_name Pickup extends Grabbable
 
 
+## If [code]true[/code], the player can throw this object, else it always drops straight down when
+## released.
 @export var throwable := true
 
 var _holder: Node3D = null

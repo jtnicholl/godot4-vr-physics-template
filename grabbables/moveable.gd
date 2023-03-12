@@ -1,3 +1,4 @@
+## A grabbable object that the player can slide around, but not pick up.
 class_name Moveable extends Grabbable
 
 

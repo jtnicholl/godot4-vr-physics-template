@@ -1,14 +1,24 @@
 class_name VRPlayer extends Node3D
 
 
+## Emitted when the player has his or her head within a wall for 1.2 seconds.
 signal bounds_escaped()
 
+## If [code]true[/code], the player is currently allowed to move.[br]
+## This affects both walking and teleporting. Use it to freeze the player in one spot.
 @export var can_move := true
-@export var walk_speed := 1.0
-@export var impulse_multiplier := 0.2
-@export var fall_speed := 1.0
+## The player's walking speed when using continuous locomotion, in meters per second.
+@export_range(0.1, 5.0, 0.1, "or_greater", "hide_slider") var walk_speed := 1.0
+## Multiplier for how hard the player can throw a held [Pickup].
+@export_range(0.0, 2.0, 0.05, "or_greater", "hide_slider") var impulse_multiplier := 0.2
+## How fast the player falls after walking off a ledge using continuous locomotion.[br]
+## This is a continuous speed without acceleration, unaffected by gravity settings. This helps
+## minimize VR-induced motion sickness.
+@export_range(0.1, 5.0, 0.1, "or_greater", "hide_slider") var fall_speed := 1.0
 
+## If [code]true[/code], the player can teleport.
 var teleporting_enabled: bool
+## If [code]true[/code], the player can walk.
 var continuous_locomotion_enabled: bool:
 	get:
 		return continuous_locomotion_enabled
@@ -16,12 +26,17 @@ var continuous_locomotion_enabled: bool:
 		continuous_locomotion_enabled = value
 		if not value:
 			_walking = false
+## The source used for walking direction (Relative to the head, left hand, or right hand).
 var locomotion_direction_source: Settings.LocomotionDirectionSource
+## Whether turning the direction source after starting to walk should change walking direction, or
+## if the player is required to stop and start walking again.
 var locomotion_update_mode: Settings.LocomotionUpdateMode
+## If [code]true[/code], the player turns every frame while holding a turn input, instead of once
+## upon pressing the input.
 var smooth_turning := false
-var walk_require_press := false
-var turn_require_press := false
 
+var _walk_require_press := false
+var _turn_require_press := false
 var _left_grabbable: Grabbable = null
 var _right_grabbable: Grabbable = null
 var _walking_input := Vector2.ZERO
@@ -47,7 +62,7 @@ var _turning := false
 
 func _physics_process(delta: float) -> void:
 	_update_collision()
-	if can_move and (_walking or not walk_require_press) and not _walking_input.is_zero_approx():
+	if can_move and (_walking or not _walk_require_press) and not _walking_input.is_zero_approx():
 		if locomotion_update_mode == Settings.LocomotionUpdateMode.CONTINUOUS:
 			_update_locomotion_direction()
 		var movement := _walking_input.rotated(-_locomotion_direction)
@@ -56,10 +71,11 @@ func _physics_process(delta: float) -> void:
 	elif not _body.is_on_floor():
 		_body.velocity = Vector3.DOWN * fall_speed
 		_body.move_and_slide()
-	if smooth_turning and (_turning or not turn_require_press):
+	if smooth_turning and (_turning or not _turn_require_press):
 		smooth_turn(_turning_input * delta)
 
 
+## Position the player with their feet at [param global_position].
 func position_feet(global_position: Vector3) -> void:
 	var camera_offset := _camera.global_position - self.global_position
 	_body.position.y = 0.0
@@ -67,11 +83,14 @@ func position_feet(global_position: Vector3) -> void:
 	self.global_position = global_position - camera_offset
 
 
+## Position the player with their head at [param global_position].
 func position_head(global_position: Vector3) -> void:
 	var camera_offset := _camera.global_position - global_position
 	self.global_position = global_position - camera_offset
 
 
+## Rotate the player [param radians] clockwise (positive values to the player's right).[br]
+## This turns the root node, do not call it every frame.
 func snap_turn(radians: float) -> void:
 	var camera_offset := _camera.global_position - self.global_position
 	var camera_offset_2d := Vector2(camera_offset.x, camera_offset.z)
@@ -80,6 +99,8 @@ func snap_turn(radians: float) -> void:
 	global_translate(Vector3(camera_offset_difference.x, 0.0, camera_offset_difference.y))
 
 
+## Rotate the player [param radians] clockwise (positive values to the player's right).[br]
+## This turns only the player's body, making it acceptable to call every frame.
 func smooth_turn(radians: float) -> void:
 	var camera_offset := _camera.position
 	var camera_offset_2d := Vector2(camera_offset.x, camera_offset.z)
@@ -88,10 +109,11 @@ func smooth_turn(radians: float) -> void:
 	_body.translate(Vector3(camera_offset_difference.x, 0.0, camera_offset_difference.y))
 
 
+## Apply the given [param controller_settings] to this player.
 func set_controller_settings(controller_settings: ControllerSettings) -> void:
 	_set_hand_offset(controller_settings.hand_offset_position, controller_settings.hand_offset_rotation)
-	walk_require_press = controller_settings.walk_require_press
-	turn_require_press = controller_settings.turn_require_press
+	_walk_require_press = controller_settings.walk_require_press
+	_turn_require_press = controller_settings.turn_require_press
 	_left_controller.pose = controller_settings.pose
 	_right_controller.pose = controller_settings.pose
 
@@ -140,7 +162,7 @@ func _update_locomotion_direction() -> void:
 
 
 func _update_turning_input(value: float) -> void:
-	if not smooth_turning and not turn_require_press:
+	if not smooth_turning and not _turn_require_press:
 		if not _turning:
 			_turning = not is_zero_approx(value)
 			if _turning:
@@ -228,11 +250,11 @@ func _on_controller_button_pressed(
 		else:
 			assert(hand == XRPositionalTracker.TRACKER_HAND_RIGHT)
 			_on_teleport_right_action_pressed()
-	elif name == &"walk" and walk_require_press:
+	elif name == &"walk" and _walk_require_press:
 		_walking = continuous_locomotion_enabled
 		if _walking:
 			_update_locomotion_direction()
-	elif name == &"turn" and turn_require_press:
+	elif name == &"turn" and _turn_require_press:
 		if not smooth_turning and not _turning and not is_zero_approx(_turning_input):
 			snap_turn(PI / 4.0 if _turning_input > 0.0 else -PI / 4.0)
 		_turning = true
@@ -256,7 +278,7 @@ func _on_controller_button_released(
 			_on_teleport_right_action_released()
 	elif name == &"walk":
 		_walking = false
-	elif name == &"turn" and turn_require_press:
+	elif name == &"turn" and _turn_require_press:
 		_turning = false
 
 
@@ -277,7 +299,7 @@ func _on_controller_input_vector2_changed(
 	_hand: XRPositionalTracker.TrackerHand
 ) -> void:
 	if name == &"walk_direction":
-		if not walk_require_press and _walking_input.is_zero_approx():
+		if not _walk_require_press and _walking_input.is_zero_approx():
 			_update_locomotion_direction()
 		_walking_input.x = value.x
 		_walking_input.y = -value.y
