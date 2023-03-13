@@ -19,7 +19,7 @@ size = Vector3(0.02, 0.1, 0.54)
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-custom_integrator = true
+gravity_scale = 0.0
 
 [node name="Handle" type="Marker3D" parent="GrabPoints" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0.29)
