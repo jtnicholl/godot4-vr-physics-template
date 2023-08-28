@@ -25,31 +25,18 @@ func _exit_tree():
 func grab(by: PhysicsBody3D) -> void:
 	if is_instance_valid(_holder):
 		return
-	_reparent_self(by)
-	_reparent_shapes(by)
+	for current_shape in _collision_shapes:
+		current_shape.reparent(by)
+	reparent(by)
 	_holder = by
 	freeze = true
 
 
 func release(impulse := Vector3.ZERO) -> void:
 	_holder = null
-	_reparent_shapes(self)
-	_reparent_self(_original_parent)
+	reparent(_original_parent)
+	for current_shape in _collision_shapes:
+		current_shape.reparent(self)
 	freeze = false
 	if throwable:
 		apply_central_impulse(impulse)
-
-
-func _reparent_self(to: Node3D) -> void:
-	var original_transform := global_transform
-	get_parent().remove_child(self)
-	to.add_child(self)
-	global_transform = original_transform
-
-
-func _reparent_shapes(to: Node3D) -> void:
-	for current_shape in _collision_shapes:
-		var original_transform := current_shape.global_transform
-		current_shape.get_parent().remove_child(current_shape)
-		to.add_child(current_shape)
-		current_shape.global_transform = original_transform
